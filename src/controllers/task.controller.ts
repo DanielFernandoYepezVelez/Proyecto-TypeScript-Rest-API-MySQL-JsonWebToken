@@ -1,24 +1,30 @@
 import { Request, Response } from "express";
 
-// import connection from "../libs/mysql2";
+import connection from "../libs/mysql2";
 
 class TaskController {
-  public async getTasks(req: Request, res: Response): Promise<Response<JSON>> {
-    // const cnn = await connection;
-    const query = [
-      {
-        id: 1,
-        title: "Primer Tarea",
-        description: "This Is First Title",
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-    ];
+  public async getTasks(req: Request, res: Response): Promise<any> {
+    try {
+      const idUser = res.locals.userId;
 
-    return res.json({
-      ok: true,
-      tasks: query,
-    });
+      const cnn = await connection;
+      const query = await cnn.query(
+        "SELECT id, title, description FROM tasks WHERE id = ?",
+        [idUser]
+      );
+
+      if (query[0]) {
+        return res.json({
+          ok: true,
+          tasks: query[0],
+        });
+      }
+    } catch (e) {
+      return res.json({
+        ok: false,
+        message: "Task No Found!",
+      });
+    }
   }
 }
 

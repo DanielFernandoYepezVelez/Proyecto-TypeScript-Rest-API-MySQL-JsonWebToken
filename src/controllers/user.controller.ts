@@ -13,14 +13,6 @@ import { UserDB } from "../helpers/UserDB";
 import { match } from "assert";
 
 class UserController {
-  public async users(req: Request, res: Response): Promise<Response<JSON>> {
-    return res.json("USERS Funciona Correctamente");
-  }
-
-  public async user(req: Request, res: Response): Promise<Response<JSON>> {
-    return res.json("USER Funciona Correctamente");
-  }
-
   /* Aqui Me Registro */
   public async createUser(req: Request, res: Response): Promise<any> {
     try {
@@ -95,7 +87,7 @@ class UserController {
               [confirmUser.email]
             );
 
-            /* Obtengo El Id De La Base De Datos Para Almacenar En El Token*/
+            /* Obtengo El Id De La Base De Datos Para Almacenar En El Token(Forma No Optima)*/
             let userDB = new UserDB(query[0]);
             const idUser = userDB.init(2, 7);
 
@@ -122,20 +114,6 @@ class UserController {
         error: e,
       });
     }
-  }
-
-  public async updateUser(
-    req: Request,
-    res: Response
-  ): Promise<Response<JSON>> {
-    return res.json("UPDATE USER Funciona Correctamente");
-  }
-
-  public async deleteUser(
-    req: Request,
-    res: Response
-  ): Promise<Response<JSON>> {
-    return res.json("DELETE USER Funciona Correctamente");
   }
 }
 
